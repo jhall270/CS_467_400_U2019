@@ -1,0 +1,37 @@
+const path = require('path');
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+var handlebars = require('express-handlebars').create({defaultLayout:'main'});
+
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
+
+// Point to user location
+app.use('/users', require('./users/main.js'));
+
+// Point to admin location
+app.use('/admin', require('./admin/main.js'));
+
+// Load login page
+app.get('/', (req, res) => {
+    res.render('login');
+});
+
+app.use((req, res) => {
+    res.status(400).send('Not Found');
+});
+
+app.use((err, req, res) => {
+    console.log(err);
+    res.status(500).send(err.response || 'Something broke!');
+});
+
+if (module === require.main) {
+    const server = app.listen(config.get('PORT'), () => {
+        const port = server.address().port;
+        console.log(`App listening on port $(port)`);
+    });
+}
+
+module.exports = app;
