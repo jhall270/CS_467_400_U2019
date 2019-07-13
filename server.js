@@ -32,7 +32,7 @@ app.use((err, req, res) => {
 if (module === require.main) {
     const server = app.listen(app.get('PORT'), () => {
         const port = server.address().port;
-        console.log(`App listening on port $(port)`);
+        console.log(`App listening on port ${port}`);
     });
 }
 
