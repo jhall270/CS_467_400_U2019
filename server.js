@@ -1,11 +1,13 @@
 const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
+const mysql = require('./dbaccess.js');
 const app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
+app.set('PORT', 8800);
 
 // Point to user location
 app.use('/users', require('./users/main.js'));
@@ -28,7 +30,7 @@ app.use((err, req, res) => {
 });
 
 if (module === require.main) {
-    const server = app.listen(config.get('PORT'), () => {
+    const server = app.listen(app.get('PORT'), () => {
         const port = server.address().port;
         console.log(`App listening on port $(port)`);
     });
