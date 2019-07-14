@@ -5,10 +5,10 @@ dotenv.config();
 
 var pool = mysql.createPool({
     connectionLimit : 10,
-    host            : 'https://secure.oregonstate.edu/oniddb/', //This may need to be changed
-    user            : process.env.USERNAME,
-    password        : process.env.PASSWORD,
-    database        : process.env.DATABASE
+    host            : 'oniddb.cws.oregonstate.edu',
+    user            : process.env.MYSQL_USERNAME,
+    password        : process.env.MYSQL_PASSWORD,
+    database        : process.env.MYSQL_DATABASE
 });
 
 module.exports.pool = pool;
