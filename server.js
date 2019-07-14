@@ -9,6 +9,8 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('PORT', 8800);
 
+app.use(express.static('public'));
+
 // Point to user location
 app.use('/users', require('./users/main.js'));
 

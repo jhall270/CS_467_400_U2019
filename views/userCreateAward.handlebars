@@ -1,0 +1,32 @@
+<div>
+    <div class="form">
+        <form action="/users/create" method="post">
+            <div class="form-row">
+                <label>Awardee Full Name</label>
+                <input id="name" type="text" name="name" placeholder="John Doe" required>
+            </div>
+            <div class="form-row">
+                <label>Type of Award</label>
+                <select name="award" id="award" required>
+                    <option value="Employee of the Month">Employee of the Month</option>
+                    <option value="Employee of the Year">Employee of the Year</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Email</label>
+                <input id="email" type="text" name="email" required>
+            </div>
+            <div class="form-row">
+                <label>Date of Award</label>
+                <input type="date" name="awardDate" id="awardDate" required>
+            </div>
+            <div class="form-row">
+                <label>Department</label>
+                <input id="department" type="text" name="department" required>
+            </div>
+            <div class="btn-block">
+                <button type="submit">Submit Award</button>
+            </div>
+        </form>
+    </div>
+</div>
