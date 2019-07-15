@@ -1,7 +1,9 @@
 const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
-const mysql = require('./dbaccess.js');
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database(':memory:');	//setting up an in-memory database
+
 const app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
@@ -10,6 +12,10 @@ app.set('view engine', 'handlebars');
 app.set('PORT', 8800);
 
 app.use(express.static('public'));
+
+//Setting up database
+
+
 
 // Point to user location
 app.use('/users', require('./users/main.js'));
