@@ -1,25 +1,25 @@
 {
-    "name": "Employee Recognition Portal",
-    "version": "0.0.1",
-    "description": "A web based portal that will allow a user to create employee recognition certificates.",
-    "main": "server.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Chad Fingerson, Jeff Hall, Matt Lietz",
-    "license": "ISC",
-    "dependencies": {
-        "auth0": "^2.18.0",
-        "body-parser": "^1.19.0",
-        "cookie-parser": "^1.4.4",
-        "dotenv": "^8.0.0",
-        "ejs": "^2.6.2",
-        "email-templates": "^2.6.0",
-        "express": "^4.17.1",
-        "express-handlebars": "^3.1.0",
-        "express-session": "^1.11.3",
-        "mysql": "^2.17.1",
-        "nodemailer": "^6.2.1",
-        "request": "^2.88.0"
-    }
+  "name": "employee-recognition-portal",
+  "version": "0.0.1",
+  "description": "A web based portal that will allow a user to create employee recognition certificates.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chad Fingerson, Jeff Hall, Matt Lietz",
+  "license": "ISC",
+  "dependencies": {
+    "auth0": "^2.18.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.0.0",
+    "ejs": "^2.6.2",
+    "email-templates": "^2.6.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.11.3",
+    "nodemailer": "^6.2.1",
+    "request": "^2.88.0",
+    "sqlite3": "^4.0.9"
+  }
 }
