@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-var mysql = require('../dbaccess.js');
+const sqlite3 = require('sqlite3').verbose();
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -16,20 +16,25 @@ router.get('/create', (req, res, next) => {
 });
 
 router.post('/create', (req, res, next) => {
-    var context = {};
-    var userName = "user1@user.com";
-    mysql.pool.query("INSERT INTO Award (`TypeOfAward`, `NameOfAwardee`, `EmailAddress`, `DateTimeAward`, `Department`, `UserName`) VALUES (?, ?, ?, ?, ?, ?)", [req.body.award, req.body.name, req.body.email, req.body.awardDate, req.body.department, userName], function(err, result) {
-        if(err) {
-            console.log(err);
-            next(err);
-            return;
+    //Connecting to database
+    var db = new sqlite3.Database('./db/empRec.db');
+    
+    // Create insert statement for database
+    let data = [req.body.award, req.body.name, req.body.email, req.body.awardDate, req.body.department, 'user1@user.com'];
+    let placeholders = '(' + data.map((data) => '?').join(', ') + ')';
+    let sql = 'INSERT INTO Award (`TypeOfAward`, `NameOfAwardee`, `EmailAddress`, `DateTimeAward`, `Department`, `UserName`) VALUES ' + placeholders;
+
+    // Insert award into database
+    db.run(sql, data, function(err) {
+        if (err) {
+            return console.error(err.message);
         }
-        context.awardee = req.body.name;
-        context.email= req.body.email;
-        console.log(context);
-        // Must add award creation function call at a later time
+        var context = {};
+        context.name = req.body.name;
+        context.email = req.body.email;
         res.render('userAwardMade', context);
     });
+    db.close();
 });
 
 router.get('/view', (req, res, next) => {

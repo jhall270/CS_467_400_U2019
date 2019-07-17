@@ -1,7 +1,6 @@
 const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
-const mysql = require('./dbaccess.js');
 const app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
