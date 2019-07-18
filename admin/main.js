@@ -3,30 +3,33 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const sqlite3 = require('sqlite3').verbose();
 
-const router = express.Router();
-router.use(bodyParser.json());
-
-router.get('/', (req, res, next) => {
-    res.render('adminLanding');
-});
-
 
 const multer = require('multer');
 
 // SET STORAGE
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../public/images')
+    cb(null, './public/images')
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now())
   }
 })
- 
 
 var upload = multer({ storage: storage })
 
 
+const router = express.Router();
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
+
+
+
+
+router.get('/', (req, res, next) => {
+    res.render('adminLanding');
+});
 
 
 //display form to create new user
@@ -35,9 +38,11 @@ router.get('/create-user', function(req, res){
     res.render('adminCreateUser', context);
 });
 
+
 //create new user form posts to here
 router.post('/create-user',function(req, res){
     var context = {};
+	console.log("CREATE USER Post route");
     console.log(req.body);
 	
 	//Connecting to database
@@ -59,21 +64,27 @@ router.post('/create-user',function(req, res){
     }
 
     //add new row to user table
-	db.run("INSERT into User(UserName, FirstName, LastName, SoftDelete, IsAdmin) Values (?, ?, ?,0,?)" , [req.email, req.firstName, req.lastName, adminflag]);
+	db.run("INSERT into User(UserName, FirstName, LastName, SoftDelete, IsAdmin) Values (?, ?, ?,0,?)" , 
+			[req.body.email, req.body.firstName, req.body.lastName, adminflag],
+			function(err){
+				if(err){
+					console.log(err);
+					res.send("Error creating user: " + err);
+				}
+				else{
+					//after adding new user record, if user is admin go to signature upload page
+					if(req.body.user != 'admin'){
+					  context.UserName = req.email;
+					  res.render('adminUploadSignature',context);
+					}
+					else{
+					  res.send("Admin user created");
+					}					
+				}
+												
+				db.close();
+			});
 
-	
-	db.close();
-
-    //after adding new user record, if user is admin go to signature upload page
-    if(req.body.user != 'admin'){
-      context.UserName = req.email;
-      res.render('adminUploadSignature',context);
-      return;
-    }
-    else{
-      res.send("Admin user created");
-      return;
-    }
     
 });
 
@@ -88,7 +99,8 @@ router.post('/upload-signature', upload.single('signatureImage'), (req, res, nex
     error.httpStatusCode = 400
     return next(error)
   }
-    res.send(file)
+  
+  res.send(file)
   
 });
 
