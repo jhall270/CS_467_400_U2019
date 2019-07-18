@@ -1,0 +1,44 @@
+
+<h3>Create New User</h3>
+
+<div>
+    <span>{{status}}</span>
+</div>
+
+<div>
+    <form action="create-user" method="post">
+    <div>
+        <label for="firstName">First Name: </label>
+        <input type="text" name="firstName" id="firstName" required>
+    </div>
+    <div>
+        <label for="lastName">Last Name: </label>
+        <input type="text" name="lastName" id="lastName" required>
+    </div>
+    <div>
+        <label for="email">Email: </label>
+        <input type="email" name="email" id="email" required>
+    </div>
+    <div>
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password" required minlength="8" maxlength="20">
+    </div>
+
+    <p>User Type:</p>
+
+    <div>
+    <input type="radio" id="standard" name="user" value="standard"
+            checked>
+    <label for="standard">Standard</label>
+    </div>
+
+    <div>
+    <input type="radio" id="admin" name="user" value="admin">
+    <label for="admin">Administrator</label>
+    </div>
+
+    <div>
+        <input type="submit" value="Create">
+    </div>
+    </form>
+</div>
