@@ -4,6 +4,8 @@ const express = require('express');
 const auth0 = require('./lib/auth0');
 const app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
+var util = require('util');
+var querystring = require('querystring');
 
 // Load environment variables from .env
 var dotenv = require('dotenv');
@@ -75,8 +77,10 @@ app.get('/callback', function (req, res, next) {
         delete req.session.returnTo;
         auth0.getRole(user.id).then( (userRole) => {
             if (userRole == 'Users') {
+                req.session.role = 'Users';
                 res.redirect(returnTo || '/users');
             } else if (userRole == 'Admin') {
+                req.session.role = 'Admin';
                 res.redirect(returnTo || '/admin');
             } else {
                 res.status(403).send('Access is not authorized');
@@ -91,7 +95,6 @@ app.get('/callback', function (req, res, next) {
 
 app.get('/logout', (req, res) => {
     req.logout();
-
     var returnTo = req.protocol + '://' + req.hostname;
     var port = req.connection.localPort;
     if (port !== undefined && port !== 80 && port !== 443) {
@@ -105,7 +108,7 @@ app.get('/logout', (req, res) => {
         returnTo: returnTo
     });
     logoutUrl.search = searchString;
-    res.redirect(logoutURL);
+    res.redirect(logoutUrl);
 });
 
 app.use((req, res) => {
