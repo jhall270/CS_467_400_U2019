@@ -2,25 +2,26 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const sqlite3 = require('sqlite3').verbose();
+var secured = require('../lib/secured');
 
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('/', (req, res, next) => {
+router.get('/', secured(), (req, res, next) => {
     res.render('userLanding');
 });
 
-router.get('/create', (req, res, next) => {
+router.get('/create', secured(), (req, res, next) => {
     res.render('userCreateAward');
 });
 
-router.post('/create', (req, res, next) => {
+router.post('/create', secured(), (req, res, next) => {
     //Connecting to database
     var db = new sqlite3.Database('./db/empRec.db');
     
     // Create insert statement for database
-    let data = [req.body.award, req.body.name, req.body.email, req.body.awardDate, req.body.department, 'user1@user.com'];
+    let data = [req.body.award, req.body.name, req.body.email, req.body.awardDate, req.body.department, req.user.id];
     let placeholders = '(' + data.map((data) => '?').join(', ') + ')';
     let sql = 'INSERT INTO Award (`TypeOfAward`, `NameOfAwardee`, `EmailAddress`, `DateTimeAward`, `Department`, `UserName`) VALUES ' + placeholders;
 
