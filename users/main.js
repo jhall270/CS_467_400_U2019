@@ -8,23 +8,15 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-function restrict(req, res, next) {
-    if (req.session.role == 'Users') {
-        next();
-    } else {
-        res.redirect('/');
-    }
-}
-
-router.get('/', secured(), restrict, (req, res, next) => {
+router.get('/', secured.User(), (req, res, next) => {
     res.render('userLanding');
 });
 
-router.get('/create', secured(), restrict, (req, res, next) => {
+router.get('/create', secured.User(), (req, res, next) => {
     res.render('userCreateAward');
 });
 
-router.post('/create', secured(), restrict, (req, res, next) => {
+router.post('/create', secured.User(), (req, res, next) => {
     //Connecting to database
     var db = new sqlite3.Database('./db/empRec.db');
     
@@ -46,11 +38,11 @@ router.post('/create', secured(), restrict, (req, res, next) => {
     db.close();
 });
 
-router.get('/view', secured(), restrict, (req, res, next) => {
+router.get('/view', secured.User(), (req, res, next) => {
     res.render('userViewAwards');
 });
 
-router.get('/update', secured(), restrict, (req, res, next) => {
+router.get('/update', secured.User(), (req, res, next) => {
     res.render('userUpdate');
 });
 
