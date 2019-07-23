@@ -69,27 +69,27 @@ app.get('/', passport.authenticate('auth0', {
 
 app.get('/callback', function (req, res, next) {
     passport.authenticate('auth0', function (err, user, info) {
-      if (err) { return next(err); }
-      if (!user) { return res.redirect('/'); }
-      req.logIn(user, function (err) {
         if (err) { return next(err); }
-        const returnTo = req.session.returnTo;
-        delete req.session.returnTo;
-        auth0.getRole(user.id).then( (userRole) => {
-            if (userRole == 'Users') {
-                req.session.role = 'Users';
-                res.redirect(returnTo || '/users');
-            } else if (userRole == 'Admin') {
-                req.session.role = 'Admin';
-                res.redirect(returnTo || '/admin');
-            } else {
-                res.status(403).send('Access is not authorized');
-            }
-        })
-        .catch((error)=>{
-            console.log(error);
+        if (!user) { return res.redirect('/'); }
+        req.logIn(user, function (err) {
+        if (err) { return next(err); }
+            const returnTo = req.session.returnTo;
+            delete req.session.returnTo;
+            auth0.getRole(user.id).then( (userRole) => {
+                if (userRole == 'Users') {
+                    req.session.role = 'Users';
+                    res.redirect(returnTo || '/users');
+                } else if (userRole == 'Admin') {
+                    req.session.role = 'Admin';
+                    res.redirect(returnTo || '/admin');
+                } else {
+                    res.status(403).send('Access is not authorized');
+                }
+            })
+            .catch((error)=>{
+                console.log(error);
+            });
         });
-      });
     })(req, res, next);
 });
 
