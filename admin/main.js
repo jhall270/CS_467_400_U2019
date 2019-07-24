@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const sqlite3 = require('sqlite3').verbose();
-
+var auth0 = require('../lib/auth0.js');
 
 const multer = require('multer');
 
@@ -12,7 +12,7 @@ var storage = multer.diskStorage({
     cb(null, './public/images')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, file.originalname.split(".")[0] + '-' + Date.now() + "." + file.originalname.split(".")[1]);
   }
 })
 
@@ -43,49 +43,64 @@ router.get('/create-user', function(req, res){
 router.post('/create-user',function(req, res){
     var context = {};
 	console.log("CREATE USER Post route");
-    console.log(req.body);
+	console.log(req.body);
+
+	// Send user info to auth0 to create authentication
+
+	var newUser = {
+		email: req.body.email,
+		password: req.body.password,
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		role: ""
+	};
+
+	if (req.body.user == 'admin'){
+		var adminflag = 1;
+		newUser.role = "Admin";
+	}
+	else{
+		var adminflag = 0;
+		newUser.role = "User";
+	}
+
+	console.log(newUser);
+
+	auth0.addLogin(newUser)
+	.catch((error) => {
+		console.log(error);
+		res.send(error);
+		return;
+	})
+	.then( function(userId){		
+		console.log("New User " + userId);
 	
-	//Connecting to database
-	var db = new sqlite3.Database('./db/empRec.db');
+		//Connecting to database
+		var db = new sqlite3.Database('./db/empRec.db');
 
-    //TODO: New user validation
-    //if email already in system return to form and display error
-    if(1 == 0){
-        context.status = "Error creating user, email already in use";
-        res.render('adminCreateUser', context);
-        return;
-    }
 
-    if (req.body.user == 'admin'){
-      var adminflag = 1;
-    }
-    else{
-      var adminflag = 0;
-    }
-
-    //add new row to user table
-	db.run("INSERT into User(UserName, FirstName, LastName, SoftDelete, IsAdmin) Values (?, ?, ?,0,?)" , 
-			[req.body.email, req.body.firstName, req.body.lastName, adminflag],
-			function(err){
-				if(err){
-					console.log(err);
-					res.send("Error creating user: " + err);
+		//add new row to user table
+		var query = "INSERT into User (UserName,	Email,	FirstName, LastName, SoftDelete, IsAdmin) Values (?, ?, ?, ?,0,?)" ;
+		db.run(query, [userId, req.body.email, req.body.firstName, req.body.lastName, adminflag], function(err){
+			if(err){
+				console.log(err);
+				res.send("Error creating user: " + err);
+			}
+			else{
+				//after adding new user record, if user is admin go to signature upload page
+				if(req.body.user != 'admin'){
+					context.userID = userId;
+					res.render('adminUploadSignature',context);
 				}
 				else{
-					//after adding new user record, if user is admin go to signature upload page
-					if(req.body.user != 'admin'){
-					  context.UserName = req.email;
-					  res.render('adminUploadSignature',context);
-					}
-					else{
-					  res.send("Admin user created");
-					}					
-				}
-												
-				db.close();
-			});
+					res.send("Admin user created");
+				}					
+			}
+										
+			db.close();
+		});
 
-    
+	});
 });
 
 
@@ -100,8 +115,59 @@ router.post('/upload-signature', upload.single('signatureImage'), (req, res, nex
     return next(error)
   }
   
+  console.log(req.body.userId);
+
+	//Connecting to database
+	var db = new sqlite3.Database('./db/empRec.db');
+
+	var query = "update user set signature = ? where UserName = ?";
+	db.run(query,[file.fieldname, req.body.userID],	function(err){
+		if(err){
+			console.log(err);
+		}
+		db.close();
+	});
+
+
   res.send(file)
   
 });
+
+
+
+//BI Reports
+router.get('/BIReport1', function(req, res){
+	context = {};
+	
+	res.render('adminBIReport1', {layout: 'alt'});
+});
+
+
+
+
+//AJAX data route,
+router.get('/data/awardTypeCount', function(req, res){
+	context = {};
+	
+	//Connecting to database
+	var db = new sqlite3.Database('./db/empRec.db');	
+	var query = "select count(id) AS numType, typeofaward from award group by typeofaward"
+	
+	db.all(query, [], function(err, rows){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log(rows);
+			res.json(rows);
+		}	
+		
+		db.close();
+	});
+	
+});
+
+
+
 
 module.exports = router; 
