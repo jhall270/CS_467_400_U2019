@@ -134,6 +134,54 @@ router.post('/upload-signature', upload.single('signatureImage'), (req, res, nex
 });
 
 
+// Edit/Update/Delete User routes
+
+router.get('/editUsers', function(req,res){
+	context = {};
+	var db = new sqlite3.Database('./db/empRec.db');
+	var query = "select Id, UserName, Email, FirstName, LastName, Signature, IsAdmin from User where SoftDelete = 0;"
+	db.all(query, function(err, rows){
+		if(err){
+			console.log(err);
+		}
+		else{
+			context.rows = rows;
+
+			res.render('adminEditUserList', context);
+		}
+		db.close();
+	})
+});
+
+
+router.get('/updateUser', function(req,res){
+	context = {};
+	var db = new sqlite3.Database('./db/empRec.db');
+	var query = "select Id, UserName, Email, FirstName, LastName, Signature, IsAdmin from User where Id = ?"
+
+	if(!req.query.id){
+		res.send("Error: Need an id");
+	}
+
+	db.get(query, [req.query.id], function(err,row){
+		if(err){
+			console.log(err);
+		}
+		else{
+			context.row = row;
+			res.render('adminUpdateUser', context);
+		}		
+		db.close();
+	});
+
+});
+
+
+router.get('deleteUser', function(req,res){
+
+});
+
+
 
 //BI Reports
 router.get('/BIReport1', function(req, res){

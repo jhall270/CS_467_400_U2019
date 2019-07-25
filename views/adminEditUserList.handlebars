@@ -1,0 +1,49 @@
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                User Type
+            </th>
+            <th>
+                Options
+            </th>                
+        </tr>
+    </thead>
+    <tbody>
+        {{#each rows}}
+        <tr>
+            <td>
+                {{this.FirstName}}
+            </td>
+            <td>
+                {{this.LastName}}
+            </td>
+            <td>
+                {{this.Email}}
+            </td>
+            <td>
+                {{#if this.IsAdmin}}
+                    Administrator
+                {{else}}
+                    Standard User
+                {{/if}}
+            </td>
+            <td>
+                <a href="updateUser?id={{this.Id}}">Edit</a>
+                <a href="deleteUser?id={{this.Id}}">Delete</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
