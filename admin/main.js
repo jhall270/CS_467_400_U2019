@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const sqlite3 = require('sqlite3').verbose();
 var auth0 = require('../lib/auth0.js');
+var secured = require('../lib/secured');
 
 const multer = require('multer');
 
@@ -27,20 +28,20 @@ router.use(bodyParser.json());
 
 
 
-router.get('/', (req, res, next) => {
+router.get('/', secured.Admin(), (req, res, next) => {
     res.render('adminLanding');
 });
 
 
 //display form to create new user
-router.get('/create-user', function(req, res){
+router.get('/create-user', secured.Admin(), function(req, res){
     var context = {};
     res.render('adminCreateUser', context);
 });
 
 
 //create new user form posts to here
-router.post('/create-user',function(req, res){
+router.post('/create-user', secured.Admin(), function(req, res){
     var context = {};
 	console.log("CREATE USER Post route");
 	console.log(req.body);
@@ -104,7 +105,7 @@ router.post('/create-user',function(req, res){
 });
 
 
-router.post('/upload-signature', upload.single('signatureImage'), (req, res, next) => {
+router.post('/upload-signature', secured.Admin(), upload.single('signatureImage'), (req, res, next) => {
   const file = req.file;
 
   console.log(file);
@@ -184,7 +185,7 @@ router.get('deleteUser', function(req,res){
 
 
 //BI Reports
-router.get('/BIReport1', function(req, res){
+router.get('/BIReport1', secured.Admin(), function(req, res){
 	context = {};
 	
 	res.render('adminBIReport1', {layout: 'alt'});
@@ -194,7 +195,7 @@ router.get('/BIReport1', function(req, res){
 
 
 //AJAX data route,
-router.get('/data/awardTypeCount', function(req, res){
+router.get('/data/awardTypeCount', secured.Admin(), function(req, res){
 	context = {};
 	
 	//Connecting to database
