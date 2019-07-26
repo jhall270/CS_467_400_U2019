@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS User (
 
 
 INSERT INTO User (UserName, Email, FirstName, LastName, TimeStamp, Signature, SoftDelete, IsAdmin) VALUES
-('auth0|5d2a50668935cd0e8a322637', 'user1@user.com', 'UserOneFirstName', 'UserOneLastName', '2019-07-11 14:46:55', "", '0', '0'),
-('auth0|5d2a50908935cd0e8a322639', 'user2@user.com', 'UserTwoFirstName', 'UserTwoLastName', '2019-07-11 14:46:55', "", '0', '0'),
-('auth0|5d2a50ac5171f20e7057b9c8', 'user3@user.com', 'UserThreeFirstName', 'UserThreeLastName', '2019-07-11 14:46:55', "", '0', '0'),
+('auth0|5d2a50668935cd0e8a322637', 'user1@user.com', 'UserOneFirstName', 'UserOneLastName', '2019-07-11 14:46:55', "..\public\images\signature1.png", '0', '0'),
+('auth0|5d2a50908935cd0e8a322639', 'user2@user.com', 'UserTwoFirstName', 'UserTwoLastName', '2019-07-11 14:46:55', "..\public\images\signature2.png", '0', '0'),
+('auth0|5d2a50ac5171f20e7057b9c8', 'user3@user.com', 'UserThreeFirstName', 'UserThreeLastName', '2019-07-11 14:46:55', "..\public\images\signature3.png", '0', '0'),
 ('auth0|5d2a50c5ba4a7e0d2be7de96', 'admin1@admin.com', 'AdminOneFirstName', 'AdminOneLastName', '2019-07-11 14:46:55', "", '0', '1'),
 ('auth0|5d2a50dba6d2ce0e4497e1d4', 'admin2@admin.com', 'AdminTwoLastName', 'AdminTwoLastName', '2019-07-11 14:46:55', "", '0', '1');
 
