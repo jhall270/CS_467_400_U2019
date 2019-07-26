@@ -90,7 +90,7 @@ router.post('/create-user', secured.Admin(), function(req, res){
 			else{
 				//after adding new user record, if user is admin go to signature upload page
 				if(req.body.user != 'admin'){
-					context.userID = userId;
+					context.id = this.lastID;
 					res.render('adminUploadSignature',context);
 				}
 				else{
@@ -116,22 +116,22 @@ router.post('/upload-signature', secured.Admin(), upload.single('signatureImage'
     return next(error)
   }
   
-  console.log(req.body.userId);
+  console.log("file uploaded for: " + req.body.id);
 
 	//Connecting to database
 	var db = new sqlite3.Database('./db/empRec.db');
 
-	var query = "update user set signature = ? where UserName = ?";
-	db.run(query,[file.fieldname, req.body.userID],	function(err){
+	var query = "update user set signature = ? where Id = ?";
+	db.run(query,[file.filename, req.body.id],	function(err){
 		if(err){
 			console.log(err);
+		}
+		else{
+			res.send("Successfully Created User");
 		}
 		db.close();
 	});
 
-
-  res.send(file)
-  
 });
 
 
