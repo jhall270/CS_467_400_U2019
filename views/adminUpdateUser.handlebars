@@ -44,11 +44,16 @@
     </div>
 </form>
 
-
+{{#unless row.IsAdmin}} 
 <div>
     <h4>User Signature</h4>
     <img src="/images/{{row.Signature}}">
-    <a>Upload New Signature File</a>
-</div>
 
+    <form action="updateSignature" method="post">
+        <input id="id" name="id" type="hidden" value={{row.Id}}>
+        <input type="submit" value="Upload New Signature File">
+    </form>
+
+</div>
+{{/unless}} 
 

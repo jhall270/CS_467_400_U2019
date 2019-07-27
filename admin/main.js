@@ -105,6 +105,7 @@ router.post('/create-user', secured.Admin(), function(req, res){
 });
 
 
+//signature file upload form posts to this route
 router.post('/upload-signature', secured.Admin(), upload.single('signatureImage'), (req, res, next) => {
   const file = req.file;
 
@@ -175,6 +176,12 @@ router.get('/updateUser', function(req,res){
 		db.close();
 	});
 
+});
+
+router.post('/updateSignature', function(req,res){
+	context = {};
+	context.id = req.body.id;
+	res.render('adminUploadSignature',context);
 });
 
 
