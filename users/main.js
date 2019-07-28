@@ -11,15 +11,15 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('/', secured.User(), (req, res, next) => {
+router.get('/', (req, res, next) => {
     res.render('userLanding');
 });
 
-router.get('/create', secured.User(), (req, res, next) => {
+router.get('/create', (req, res, next) => {
     res.render('userCreateAward');
 });
 
-router.post('/create', secured.User(), (req, res, next) => {
+router.post('/create', (req, res, next) => {
     //Connecting to database
     var db = new sqlite3.Database('./db/empRec.db');
     
@@ -48,7 +48,7 @@ router.post('/create', secured.User(), (req, res, next) => {
     db.close();
 });
 
-router.get('/view', secured.User(), (req, res, next) => {
+router.get('/view', (req, res, next) => {
     //Connecting to database
     var db = new sqlite3.Database('./db/empRec.db');
 
@@ -65,7 +65,7 @@ router.get('/view', secured.User(), (req, res, next) => {
     })
 });
 
-router.get('/update', secured.User(), (req, res, next) => {
+router.get('/update', (req, res, next) => {
     res.render('userUpdate');
 });
 

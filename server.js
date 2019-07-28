@@ -4,8 +4,7 @@ const express = require('express');
 const auth0 = require('./lib/auth0');
 const app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
-var util = require('util');
-var querystring = require('querystring');
+var secured = require('./lib/secured');
 
 // Load environment variables from .env
 var dotenv = require('dotenv');
@@ -55,10 +54,10 @@ passport.deserializeUser(function (user, done) {
 });
 
 // Point to user location
-app.use('/users', require('./users/main.js'));
+app.use('/users', secured.User(), require('./users/main.js'));
 
 // Point to admin location
-app.use('/admin', require('./admin/main.js'));
+app.use('/admin', secured.Admin(), require('./admin/main.js'));
 
 // Load login page
 app.get('/', passport.authenticate('auth0', {
