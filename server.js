@@ -100,14 +100,8 @@ app.get('/logout', (req, res) => {
     if (port !== undefined && port !== 80 && port !== 443) {
         returnTo += ':' + port;
     }
-    var logoutUrl = new URL(
-        util.format('https://%s/v2/logout', process.env.AUTH0_DOMAIN)
-    );
-    var searchString = querystring.stringify({
-        client_id: process.env.AUTH0_CLIENT_ID,
-        returnTo: returnTo
-    });
-    logoutUrl.search = searchString;
+    var logoutUrl = 'https://' + process.env.AUTH0_DOMAIN + '/v2/logout';
+    logoutUrl += '?returnTo=' + returnTo + '&client_id=' + process.env.AUTH0_CLIENT_ID
     res.redirect(logoutUrl);
 });
 
