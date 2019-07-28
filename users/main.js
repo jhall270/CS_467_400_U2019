@@ -49,7 +49,20 @@ router.post('/create', secured.User(), (req, res, next) => {
 });
 
 router.get('/view', secured.User(), (req, res, next) => {
-    res.render('userViewAwards');
+    //Connecting to database
+    var db = new sqlite3.Database('./db/empRec.db');
+
+    let sql = "SELECT Id, TypeOfAward, NameOfAwardee, EmailAddress, DateTimeAward, Department FROM Award WHERE UserName = ?";
+    let params = req.user.id;
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        } else {
+            var context = {};
+            context.rows = rows;
+            res.render('userViewAwards', context);
+        }
+    })
 });
 
 router.get('/update', secured.User(), (req, res, next) => {

@@ -34,6 +34,6 @@ CREATE TABLE IF NOT EXISTS Award (
 
   
 INSERT INTO Award (TypeOfAward, NameOfAwardee, EmailAddress, DateTimeAward, Department, UserName, SoftDelete) VALUES
-('EmployeeOfMonth', 'Bob Smith', '', '2019-07-01 17:47:56', 'Sales', 'auth0|5d2a50668935cd0e8a322637', 0),
-('EmployeeOfWeek', 'Jane Doe', 'jane@doe.com', '2019-07-11 17:47:52', 'Engineering', 'auth0|5d2a50908935cd0e8a322639', 0);
+('Employee Of the Month', 'Bob Smith', 'bob@smith.com', '2019-07-01', 'Sales', 'auth0|5d2a50668935cd0e8a322637', 0),
+('Employee Of the Week', 'Jane Doe', 'jane@doe.com', '2019-07-11', 'Engineering', 'auth0|5d2a50908935cd0e8a322639', 0);
   

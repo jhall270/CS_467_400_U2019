@@ -1,0 +1,23 @@
+<table>
+    <thead>
+        <th>Awardee</th>
+        <th>Type of Award</th>
+        <th>Date of Award</th>
+        <th>Department</th>
+        <th>Email Address</th>
+        <th>View Certificate</th>
+        <th>Delete Award</th>
+    </thead>
+    <tbody>
+    {{#each rows}}
+        <tr>
+            <td text-align="center">{{NameOfAwardee}}</td>
+            <td text-align="center">{{TypeOfAward}}</td>
+            <td text-algin="center">{{DateTimeAward}}</td>
+            <td text-algin="center">{{Department}}</td>
+            <td text-algin="center">{{EmailAddress}}</td>
+            <td><button onclick="location.href='/awards/award{{Id}}.pdf'">Award</button></td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
