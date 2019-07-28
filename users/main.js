@@ -33,16 +33,19 @@ router.post('/create', secured.User(), (req, res, next) => {
         if (err) {
             return console.error(err.message);
         }
-        var context = {};
-        console.log(this.lastID);
-        context.name = req.body.name;
-        context.email = req.body.email;
-        res.render('userAwardMade', context);
+        var context = {
+            awardID: this.lastID,
+            presenter: req.user.name.givenName + ' ' + req.user.name.familyName,
+            name:   req.body.name,
+            award:  req.body.award,
+            date:   req.body.awardDate,
+            department: req.body.department
+        };
+        latexPrinter.GeneratePdf(context);
+        latexPrinter.EmailPdf(req.body.email, context.awardID);
+        res.redirect('/users');
     });
     db.close();
-
-    latexPrinter.GeneratePdf(req.user.name, req.body);
-    latexPrinter.EmailPdf(req.body.email);
 });
 
 router.get('/view', secured.User(), (req, res, next) => {
