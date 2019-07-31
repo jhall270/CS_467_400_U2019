@@ -201,12 +201,28 @@ router.get('/BIReport1', function(req, res){
 
 
 //AJAX data route,
-router.get('/data/awardTypeCount', function(req, res){
+router.get('/data/:dataSet', function(req, res){
 	context = {};
+	var query = "";
+
+	console.log(req.params);
+
+	if(req.params.dataSet == "awardTypeCount"){
+		query = "select count(id) AS numType, typeofaward from award group by typeofaward;";
+	}
+	else if(req.params.dataSet == "awardDate"){
+		query = "select count(*) as AwardCount, DateTimeAward from Award where DateTimeAward > '2018-01-01' AND softdelete=0 group by DateTimeAward";
+	}
+	else if(req.params.dataSet == "awardCountByCreator"){
+		query = " select count(a.Id) as numAwards, u.FirstName, u.LastName from User u join Award a on u.UserName = a.UserName group by u.FirstName, u.LastName";
+	}
+	else if(req.params.dataSet == "awardCountByDepartment"){
+		query = "select department, count(Id) as numAwards from Award group by department";
+	}
 	
 	//Connecting to database
 	var db = new sqlite3.Database('./db/empRec.db');	
-	var query = "select count(id) AS numType, typeofaward from award group by typeofaward"
+
 	
 	db.all(query, [], function(err, rows){
 		if(err){
