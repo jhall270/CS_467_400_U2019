@@ -13,7 +13,14 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', (req, res, next) => {
-    res.render('userLanding', { layout: 'user' });
+    var context = {
+        layout: 'user'
+    }
+    if (req.session.notify) {
+        context.notify = req.session.notify;
+        delete req.session.notify;
+    }
+    res.render('userLanding', context);
 });
 
 router.get('/create', (req, res, next) => {
@@ -44,6 +51,8 @@ router.post('/create', (req, res, next) => {
         };
         latexPrinter.GeneratePdf(context);
         latexPrinter.EmailPdf(req.body.email, context.awardID);
+
+        req.session.notify = "Award for " + req.body.name + " created and emailed.";
         res.redirect('/users');
     });
     db.close();
@@ -103,6 +112,8 @@ router.post('/update', (req, res, next) => {
                 email : req.body.email
             };
             auth0.updateLogin(req.user.id, data);
+
+            req.session.notify = "User information updated.";
             res.redirect('/users');
         }
     });
