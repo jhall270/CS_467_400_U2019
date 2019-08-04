@@ -4,9 +4,9 @@
     <a href="/users/update" class="landingButton">Update Account</a>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="/js/notify.js"></script>
 {{#if notify}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/js/notify.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $.notify("{{notify}}", {className: "success", position: "top center"});
