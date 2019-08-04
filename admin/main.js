@@ -185,26 +185,42 @@ router.post('/updateSignature', function(req,res){
 });
 
 
-router.get('deleteUser', function(req,res){
+router.get('/deleteUser', function(req,res){
 	context = {};
 	var db = new sqlite3.Database('./db/empRec.db');
+	var getidquery = "SELECT Username AS Username from User where Id = ?";
 	var query = "UPDATE User SET SoftDelete=1 where Id = ?";
 
 	if(!req.query.id){
 		res.send("Error: Need an id");
 	}
 
-	db.get(query, [req.query.id], function(err,row){
+	//get auth0 id for id to delete
+	db.get(getidquery, [req.query.id], function(err,row){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log("row: " + row);
+			console.log("Username to delete " + row.Username);
+
+			//delete auth0 login
+			auth0.deleteLogin({id: row.Username});
+		}		
+	});
+
+	//softdelete user record in sql database
+	db.run(query, [req.query.id],	function(err){
 		if(err){
 			console.log(err);
 		}
 		else{
 			console.log("User successfully deleted");
-			res.redirect('/editUsers');
+			res.redirect('editUsers');
 		}		
-		db.close();
 	});
 
+	db.close();
 });
 
 
