@@ -8,6 +8,7 @@ function drawCharts(){
 	drawTypePie();
 	drawAwardDate();
 	drawAwardCreator();
+	drawAwardDepartment();
 }
 
 
@@ -15,7 +16,7 @@ function drawTypePie() {
 	
 	
 	var XHR = new XMLHttpRequest();
-	var URL = 'http://localhost:8800/admin/data/awardTypeCount';
+	var URL = '/admin/data/awardTypeCount';
 
 	XHR.onreadystatechange = function(){
 		if(XHR.readyState == 4 && XHR.status == 200){
@@ -58,7 +59,7 @@ function drawAwardDate() {
 	
 	
 	var XHR = new XMLHttpRequest();
-	var URL = 'http://localhost:8800/admin/data/awardDate';
+	var URL = '/admin/data/awardDate';
 
 	XHR.onreadystatechange = function(){
 		if(XHR.readyState == 4 && XHR.status == 200){
@@ -100,7 +101,7 @@ function drawAwardCreator() {
 	
 	
 	var XHR = new XMLHttpRequest();
-	var URL = 'http://localhost:8800/admin/data/awardCountByCreator';
+	var URL = '/admin/data/awardCountByCreator';
 
 	XHR.onreadystatechange = function(){
 		if(XHR.readyState == 4 && XHR.status == 200){
@@ -127,7 +128,7 @@ function drawAwardCreator() {
 				chartArea: {width: '50%'}
 			  };
 		  
-			  var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+			  var chart = new google.charts.Bar(document.getElementById('barchart_material_creator'));
 		  
 			  chart.draw(data, google.charts.Bar.convertOptions(options));
 
@@ -140,3 +141,46 @@ function drawAwardCreator() {
 
 }
 
+function drawAwardDepartment() {
+	
+	
+	var XHR = new XMLHttpRequest();
+	var URL = '/admin/data/awardCountByDepartment';
+
+	XHR.onreadystatechange = function(){
+		if(XHR.readyState == 4 && XHR.status == 200){
+
+			var rows = JSON.parse(XHR.responseText);
+			console.log(rows);
+			
+			var formattedData = [];
+			formattedData[0] = [ "Department" , "Number of Awards"];
+			
+			for (let i in rows){
+				formattedData.push( [ rows[i].Department , rows[i].numAwards] );
+			}
+
+			console.log(formattedData);
+			
+			var data = google.visualization.arrayToDataTable(formattedData);
+
+			var options = {
+				chart: {
+				  title: 'Number of Awards by Department'
+				},
+				bars: 'horizontal', // Required for Material Bar Charts.
+				chartArea: {width: '50%'}
+			  };
+		  
+			  var chart = new google.charts.Bar(document.getElementById('barchart_material_department'));
+		  
+			  chart.draw(data, google.charts.Bar.convertOptions(options));
+
+		}
+	}	
+			XHR.open('GET', URL);
+
+			XHR.send();
+	
+
+}

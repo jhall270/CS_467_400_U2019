@@ -186,6 +186,24 @@ router.post('/updateSignature', function(req,res){
 
 
 router.get('deleteUser', function(req,res){
+	context = {};
+	var db = new sqlite3.Database('./db/empRec.db');
+	var query = "UPDATE User SET SoftDelete=1 where Id = ?";
+
+	if(!req.query.id){
+		res.send("Error: Need an id");
+	}
+
+	db.get(query, [req.query.id], function(err,row){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log("User successfully deleted");
+			res.redirect('/editUsers');
+		}		
+		db.close();
+	});
 
 });
 
