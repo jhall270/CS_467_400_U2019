@@ -1,0 +1,18 @@
+<form action="/users/update" method="post">
+    <input type="hidden" name="id" id="id" value="{{Id}}">
+    <div class="form-row">
+        <label for="firstName">First Name: </label>
+        <input type="text" name="firstName" id="firstName" value="{{FirstName}}" required>
+    </div>
+    <div class="form-row">
+        <label for="lastName">Last Name: </label>
+        <input type="text" name="lastName" id="lastName" value="{{LastName}}" required>
+    </div>
+    <div class="form-row">
+        <label for="email">Email: </label>
+        <input type="email" name="email" id="email" value="{{Email}}" required>
+    </div>
+    <div class="btn-block">
+        <input type="submit" value="Update User Information">
+    </div>
+</form>
