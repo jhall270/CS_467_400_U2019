@@ -11,6 +11,7 @@ var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/images')
   },
+  mimetype: 'image',
   filename: function (req, file, cb) {
     cb(null, file.originalname.split(".")[0] + '-' + Date.now() + "." + file.originalname.split(".")[1]);
   }
