@@ -27,3 +27,27 @@
     font-size: 18px;
     margin: 4px 2px;
 }
+
+.userNavButton{
+    background-color: #239b56;
+    border: none;
+    color: white;
+    padding: 5px 6px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 4px 2px;
+}
+
+.adminNavButton{
+    background-color: #233f9b;
+    border: none;
+    color: white;
+    padding: 5px 6px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 4px 2px;
+}
