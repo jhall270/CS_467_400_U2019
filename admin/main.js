@@ -29,20 +29,20 @@ router.use(bodyParser.json());
 
 
 router.get('/', (req, res, next) => {
-    res.render('adminLanding');
+	var context = {layout: 'admin'};
+    res.render('adminLanding', context);
 });
 
 
 //display form to create new user
 router.get('/create-user', function(req, res){
-    var context = {};
+    var context = {layout: 'admin'};
     res.render('adminCreateUser', context);
 });
 
 
 //create new user form posts to here
 router.post('/create-user', function(req, res){
-    var context = {};
 	console.log("CREATE USER Post route");
 	console.log(req.body);
 
@@ -107,6 +107,7 @@ router.post('/create-user', function(req, res){
 
 //signature file upload form posts to this route
 router.post('/upload-signature', upload.single('signatureImage'), (req, res, next) => {
+  var context = {layout: 'admin'};
   const file = req.file;
 
   console.log(file);
@@ -139,7 +140,7 @@ router.post('/upload-signature', upload.single('signatureImage'), (req, res, nex
 // Edit/Update/Delete User routes
 
 router.get('/editUsers', function(req,res){
-	context = {};
+	var context = {layout: 'admin'};
 	var db = new sqlite3.Database('./db/empRec.db');
 	var query = "select Id, UserName, Email, FirstName, LastName, Signature, IsAdmin from User where SoftDelete = 0;"
 	db.all(query, function(err, rows){
@@ -155,9 +156,9 @@ router.get('/editUsers', function(req,res){
 	})
 });
 
-
+//display form to update single user, prepopulated with existing values
 router.get('/updateUser', function(req,res){
-	context = {};
+	var context = {layout: 'admin'};
 	var db = new sqlite3.Database('./db/empRec.db');
 	var query = "select Id, UserName, Email, FirstName, LastName, Signature, IsAdmin from User where Id = ?"
 
@@ -178,8 +179,48 @@ router.get('/updateUser', function(req,res){
 
 });
 
+//post route updates the user based on post body 
+router.post('/updateUser', function(req,res){
+	var context = {layout: 'admin'};
+	//var db = new sqlite3.Database('./db/empRec.db');
+
+	console.log(req.body);
+
+	var query = "UPDATE User Set firstName = ?, lastName=?, email=? where Id=? "; 
+	var newVals = [req.body.firstName, req.body.lastName, req.body.email, req.body.Id];
+	var auth0updates =  {
+		     'email' : req.body.email,
+		     'password' : null,
+		     'firstName' : req.body.firstName,
+		     'lastName' : req.body.lastName,
+		 };
+
+	//password is string of length 0 if not updated
+	if(req.body.password.length() > 0){
+		auth0updates.password = req.body.password;
+	}
+
+	console.log(auth0updates);
+
+	//update values in auth0
+	auth0.updateLogin(req.body.Id, auth0updates);
+
+	//update values in sqlite database
+	db.run(query, newVals, function(err){
+		if(err){
+			console.log(err);
+		}
+		else{
+			context.row = row;
+			res.send('User ' + newVals.firstName + " " + newVals.lastName + " updated");
+		}		
+		db.close();
+	});
+
+});
+
 router.post('/updateSignature', function(req,res){
-	context = {};
+	var context = {layout: 'admin'};
 	context.id = req.body.id;
 	res.render('adminUploadSignature',context);
 });
