@@ -43,6 +43,7 @@ router.get('/create-user', function(req, res){
 
 //create new user form posts to here
 router.post('/create-user', function(req, res){
+	var context = {layout: 'admin'};
 	console.log("CREATE USER Post route");
 	console.log(req.body);
 
@@ -182,7 +183,8 @@ router.get('/updateUser', function(req,res){
 //post route updates the user based on post body 
 router.post('/updateUser', function(req,res){
 	var context = {layout: 'admin'};
-	//var db = new sqlite3.Database('./db/empRec.db');
+	var db = new sqlite3.Database('./db/empRec.db');
+	
 
 	console.log(req.body);
 
@@ -194,16 +196,31 @@ router.post('/updateUser', function(req,res){
 		     'firstName' : req.body.firstName,
 		     'lastName' : req.body.lastName,
 		 };
-
-	//password is string of length 0 if not updated
-	if(req.body.password.length() > 0){
+	
+	
+	//password paramter is string of length 0 if not updated
+	if(req.body.password.length > 0){
 		auth0updates.password = req.body.password;
 	}
 
 	console.log(auth0updates);
 
-	//update values in auth0
-	auth0.updateLogin(req.body.Id, auth0updates);
+	
+	//get auth0 id for id to delete
+	var getidquery = "SELECT Username AS Username from User where Id = ?";
+	db.get(getidquery, [req.body.Id], function(err,row){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log("row: " + row);
+			console.log("Username to delete " + row.Username);
+
+			//update values in auth0
+			auth0.updateLogin(row.Username, auth0updates);
+		}		
+	});
+	
 
 	//update values in sqlite database
 	db.run(query, newVals, function(err){
@@ -211,7 +228,6 @@ router.post('/updateUser', function(req,res){
 			console.log(err);
 		}
 		else{
-			context.row = row;
 			res.send('User ' + newVals.firstName + " " + newVals.lastName + " updated");
 		}		
 		db.close();
