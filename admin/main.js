@@ -231,7 +231,7 @@ router.post('/updateUser', function(req,res){
 		}
 		else{
 			context.status = "User successfully udpated";
-			res.render('adminEditUserList', context);
+			res.render('adminLanding', context);
 		}		
 		db.close();
 	});
@@ -275,8 +275,7 @@ router.get('/deleteUser', function(req,res){
 			console.log(err);
 		}
 		else{
-			context.status = "User successfully udpated";
-			res.render('adminEditUserList', context);
+			res.redirect('/admin/editUsers');
 		}		
 	});
 
