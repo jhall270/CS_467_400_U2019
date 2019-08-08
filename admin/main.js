@@ -286,9 +286,9 @@ router.get('/deleteUser', function(req,res){
 
 //BI Reports
 router.get('/BIReport1', function(req, res){
-	context = {};
+	context = {layout: 'admin'};
 	
-	res.render('adminBIReport1', {layout: 'alt'});
+	res.render('adminBIReport1', context);
 });
 
 
