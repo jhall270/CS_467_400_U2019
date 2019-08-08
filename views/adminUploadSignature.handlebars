@@ -1,13 +1,11 @@
 
 <form action="./upload-signature" method="post" enctype="multipart/form-data">
     <div>
-        <p>Select signature file to upload</p>
+        <h4>Select signature file to upload</h4>
     </div>
-    <div>
+    <div class="divContainer">
         <input id="userId" name="id" type="hidden" value={{id}}>
         <input type="file" name="signatureImage" />
-    </div>
-    <div>
         <input type="submit" value="Upload">
     </div>
 </form>

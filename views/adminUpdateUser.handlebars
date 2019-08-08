@@ -1,5 +1,5 @@
 
-
+<div class="divContainer">
 <form action="updateUser" method="post">
     <input id="Id" name="Id" type="hidden" value={{row.Id}}>
     <div>
@@ -25,13 +25,15 @@
     </div>
 </form>
 
-<p>
-    User Type: {{#if row.IsAdmin}} Administrator {{/if}} {{#unless row.IsAdmin}} Standard User{{/unless}} 
-</p>
+    <p>
+        User Type: {{#if row.IsAdmin}} Administrator {{/if}} {{#unless row.IsAdmin}} Standard User{{/unless}} 
+    </p>
+</div>
+
 
 
 {{#unless row.IsAdmin}} 
-<div>
+<div class="divContainer">
     <h4>User Signature</h4>
     <img src="/images/{{row.Signature}}">
 

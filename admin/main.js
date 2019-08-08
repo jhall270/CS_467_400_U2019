@@ -95,7 +95,8 @@ router.post('/create-user', function(req, res){
 					res.render('adminUploadSignature',context);
 				}
 				else{
-					res.send("Admin user created");
+					context.status = "Admin user created";
+					res.render('adminLanding', context);
 				}					
 			}
 										
@@ -130,7 +131,8 @@ router.post('/upload-signature', upload.single('signatureImage'), (req, res, nex
 			console.log(err);
 		}
 		else{
-			res.send("Successfully Created User");
+			context.status = "Signature file successfully uploaded";
+			res.render('adminLanding', context);
 		}
 		db.close();
 	});
@@ -228,7 +230,8 @@ router.post('/updateUser', function(req,res){
 			console.log(err);
 		}
 		else{
-			res.send('User ' + newVals.firstName + " " + newVals.lastName + " updated");
+			context.status = "User successfully udpated";
+			res.render('adminEditUserList', context);
 		}		
 		db.close();
 	});
@@ -272,8 +275,8 @@ router.get('/deleteUser', function(req,res){
 			console.log(err);
 		}
 		else{
-			console.log("User successfully deleted");
-			res.redirect('editUsers');
+			context.status = "User successfully udpated";
+			res.render('adminEditUserList', context);
 		}		
 	});
 
