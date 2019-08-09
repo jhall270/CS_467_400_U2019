@@ -1,59 +1,30 @@
-.landingButton{
-    background-color:#239B56;
-    border: none;
-    color: white;
-    padding: 20px 34px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-}
-
-.landingPosition{
-    position: fixed;
+.centerPage{
+    position: absolute;
     top: 50%;
-    left: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.logoutButton{
-    background-color: darkgrey;
-    border: none;
-    color: black;
-    padding: 5px 6px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
-    margin: 4px 2px;
-}
-
-.userNavButton{
-    background-color: #239b56;
-    border: none;
-    color: white;
-    padding: 5px 6px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
-    margin: 4px 2px;
-}
-
-.adminNavButton{
-    background-color: #233f9b;
-    border: none;
-    color: white;
-    padding: 5px 6px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
-    margin: 4px 2px;
+html, body{
+    height: 100%;
 }
 
 .divContainer{
     padding: 8px 12px;
     width: 75%;
     margin: auto;
+}
+
+.adminButtons{
+    height: 200px;
+}
+
+.py-6{
+    padding-top: 37px !important;
+    padding-bottom: 38px !important;
+}
+
+.py-7{
+    padding-top: 22px !important;
+    padding-bottom: 23px !important;
 }
