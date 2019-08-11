@@ -23,8 +23,16 @@
                                     <td>{{DateTimeAward}}</td>
                                     <td>{{Department}}</td>
                                     <td>{{EmailAddress}}</td>
-                                    <td><button onclick="location.href='/awards/award{{Id}}.pdf'">Award</button></td>
-                                    <td><button onclick="location.href='/users/delete/{{Id}}'">Delete</button></td>
+                                    <td class="text-center">
+                                        <a href="/awards/award{{Id}}.pdf" class="btn btn-success btn-sm" role="button">
+                                            <span class="oi oi-document" title="document" aria-hidden="true"></span> Award
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/users/delete/{{this.Id}}" class="btn btn-danger btn-sm" role="button">
+                                            <span class="oi oi-delete" title="delete" aria-hidden="true"></span> Delete
+                                        </a>
+                                    </td>
                                 </tr>
                             {{/each}}
                             </tbody>
