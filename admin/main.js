@@ -208,7 +208,7 @@ router.post('/updateUser', function(req,res){
 	console.log(auth0updates);
 
 	
-	//get auth0 id for id to delete
+	//get auth0 id for id to update
 	var getidquery = "SELECT Username AS Username from User where Id = ?";
 	db.get(getidquery, [req.body.Id], function(err,row){
 		if(err){
@@ -216,7 +216,7 @@ router.post('/updateUser', function(req,res){
 		}
 		else{
 			console.log("row: " + row);
-			console.log("Username to delete " + row.Username);
+			console.log("Username to update " + row.Username);
 
 			//update values in auth0
 			auth0.updateLogin(row.Username, auth0updates);
