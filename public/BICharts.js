@@ -71,7 +71,9 @@ function drawAwardDate() {
 			formattedData[0] = [ "Date" , "Number Created"];
 			
 			for (let i in rows){
-				formattedData.push( [ new Date(rows[i].DateTimeAward) , rows[i].AwardCount] );
+				var parts = rows[i].DateTimeAward.split('-');
+				var newDate = new Date(parts[0], parts[1] -1, parts[2]);
+				formattedData.push( [ new Date(newDate) , rows[i].AwardCount] );
 			}
 
 			console.log(formattedData);
